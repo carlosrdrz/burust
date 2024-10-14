@@ -1,4 +1,4 @@
-use crate::{graphics::Graphics, renderer::Renderer, ui::pane::{Pane, Widget}};
+use crate::{graphics::Graphics, renderer::Renderer, ui::pane::{Pane, Drawable, Widget, WidgetWrapper}};
 
 pub struct UIManager {
     panes: Vec<Pane>,
@@ -17,10 +17,21 @@ impl UIManager {
         let val = self.panes.get_mut(id).unwrap();
         &mut *val
     }
+
+    pub fn get_pane_widget(&mut self, pane_id: usize, widget_id: usize) -> &mut WidgetWrapper {
+        return self.get_pane(pane_id).get_widget(widget_id)
+    }
+
+    pub fn get_pane_widget_as<T>(&mut self, pane_id: usize, widget_id: usize) -> &mut T
+    where
+        T: Widget + 'static,
+    {
+        return self.get_pane_widget(pane_id, widget_id).as_widget::<T>()
+    }
 }
 
 impl Renderer for UIManager {
-    fn render(&self, layer: u16, graphics: &mut Graphics) {
+    fn render(&self, _layer: u16, graphics: &mut Graphics) {
         for pane in self.panes.iter() {
             pane.draw(graphics);
         }

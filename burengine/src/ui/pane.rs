@@ -4,14 +4,35 @@ use sdl2::pixels::Color;
 
 use crate::{graphics::Graphics, types::Rect};
 
-pub trait Widget {
+pub trait Drawable {
+    fn draw(&self, graphics: &mut Graphics);
+}
+pub trait Widget : Drawable {
     fn as_any(&self) -> &dyn Any;
     fn as_mut_any(&mut self) -> &mut dyn Any;
-    fn draw(&self, graphics: &mut Graphics);
+}
+
+pub struct WidgetWrapper {
+    widget: Box<dyn Widget>,
+}
+
+impl WidgetWrapper {
+    pub fn as_widget<T>(&mut self) -> &mut T
+    where
+        T: Widget + 'static,
+    {
+        return self.widget.as_mut_any().downcast_mut::<T>().unwrap()
+    }
+}
+
+impl Drawable for WidgetWrapper {
+    fn draw(&self, graphics: &mut Graphics) {
+        self.widget.draw(graphics);
+    }
 }
 
 pub struct Pane {
-  widgets: Vec<Box<dyn Widget>>,
+    widgets: Vec<WidgetWrapper>,
 }
 
 impl Pane {
@@ -20,28 +41,30 @@ impl Pane {
     }
 
     pub fn add_widget(&mut self, widget: Box<dyn Widget>) {
-        self.widgets.push(widget)
+        let wrapper = WidgetWrapper { widget };
+        self.widgets.push(wrapper)
     }
 
-    pub fn get_widget(&mut self, id: usize) -> &mut dyn Widget {
-        let val = self.widgets.get_mut(id).unwrap();
-        &mut **val
+    pub fn get_widget(&mut self, id: usize) -> &mut WidgetWrapper {
+        return self.widgets.get_mut(id).unwrap()
     }
 }
 
 impl Widget for Pane {
-    fn draw(&self, graphics: &mut Graphics) {
-        for widget in self.widgets.iter() {
-            widget.draw(graphics);
-        }
-    }
-
     fn as_any(&self) -> &dyn Any {
         self
     }
 
     fn as_mut_any(&mut self) -> &mut dyn Any {
         self
+    }
+}
+
+impl Drawable for Pane {
+    fn draw(&self, graphics: &mut Graphics) {
+        for widget in self.widgets.iter() {
+            widget.draw(graphics);
+        }
     }
 }
 
@@ -61,15 +84,17 @@ impl SquareWidget {
 }
 
 impl Widget for SquareWidget {
-    fn draw(&self, graphics: &mut Graphics) {
-        graphics.draw_rect(self.position, self.color);
-    }
-
     fn as_any(&self) -> &dyn Any {
         self
     }
 
     fn as_mut_any(&mut self) -> &mut dyn Any {
         self
+    }
+}
+
+impl Drawable for SquareWidget {
+    fn draw(&self, graphics: &mut Graphics) {
+        graphics.draw_rect(self.position, self.color);
     }
 }
