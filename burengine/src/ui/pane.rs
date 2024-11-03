@@ -9,7 +9,7 @@ pub struct WidgetWrapper {
 }
 
 impl WidgetWrapper {
-    pub fn as_widget<T>(&mut self) -> &mut T
+    pub fn as_mut_widget<T>(&mut self) -> &mut T
     where
         T: Widget + 'static,
     {
@@ -37,7 +37,7 @@ impl Pane {
         self.widgets.push(wrapper)
     }
 
-    pub fn get_widget(&mut self, id: usize) -> &mut WidgetWrapper {
+    pub fn get_widget_mut(&mut self, id: usize) -> &mut WidgetWrapper {
         return self.widgets.get_mut(id).unwrap()
     }
 }

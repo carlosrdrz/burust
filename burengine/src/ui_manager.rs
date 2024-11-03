@@ -18,15 +18,15 @@ impl UIManager {
         &mut *val
     }
 
-    pub fn get_pane_widget(&mut self, pane_id: usize, widget_id: usize) -> &mut WidgetWrapper {
-        return self.get_pane(pane_id).get_widget(widget_id)
+    pub fn get_pane_widget_mut(&mut self, pane_id: usize, widget_id: usize) -> &mut WidgetWrapper {
+        return self.get_pane(pane_id).get_widget_mut(widget_id)
     }
 
-    pub fn get_pane_widget_as<T>(&mut self, pane_id: usize, widget_id: usize) -> &mut T
+    pub fn get_pane_widget_as_mut<T>(&mut self, pane_id: usize, widget_id: usize) -> &mut T
     where
         T: Widget + 'static,
     {
-        return self.get_pane_widget(pane_id, widget_id).as_widget::<T>()
+        return self.get_pane_widget_mut(pane_id, widget_id).as_mut_widget::<T>()
     }
 }
 

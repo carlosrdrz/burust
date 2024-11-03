@@ -25,7 +25,7 @@ pub fn main() {
         i = (i + 1) % 255;
 
         let ui_manager = engine.get_ui_manager();
-        let square_widget: &mut SquareWidget = ui_manager.get_pane_widget_as(0, 0);
+        let square_widget: &mut SquareWidget = ui_manager.get_pane_widget_as_mut(0, 0);
         square_widget.set_color(Color::RGB(i, 64, 255 - i));
         
         engine.run_loop();
