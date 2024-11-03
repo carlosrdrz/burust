@@ -1,16 +1,8 @@
 use std::any::Any;
 
-use sdl2::pixels::Color;
+use crate::graphics::Graphics;
 
-use crate::{graphics::Graphics, types::Rect};
-
-pub trait Drawable {
-    fn draw(&self, graphics: &mut Graphics);
-}
-pub trait Widget : Drawable {
-    fn as_any(&self) -> &dyn Any;
-    fn as_mut_any(&mut self) -> &mut dyn Any;
-}
+use super::{Drawable, Widget};
 
 pub struct WidgetWrapper {
     widget: Box<dyn Widget>,
@@ -65,36 +57,5 @@ impl Drawable for Pane {
         for widget in self.widgets.iter() {
             widget.draw(graphics);
         }
-    }
-}
-
-pub struct SquareWidget {
-    color: Color,
-    position: Rect,
-}
-
-impl SquareWidget {
-    pub fn new(color: Color, position: Rect) -> SquareWidget {
-        Self { color, position }
-    }
-
-    pub fn set_color(&mut self, color: Color) {
-        self.color = color;
-    }
-}
-
-impl Widget for SquareWidget {
-    fn as_any(&self) -> &dyn Any {
-        self
-    }
-
-    fn as_mut_any(&mut self) -> &mut dyn Any {
-        self
-    }
-}
-
-impl Drawable for SquareWidget {
-    fn draw(&self, graphics: &mut Graphics) {
-        graphics.draw_rect(self.position, self.color);
     }
 }

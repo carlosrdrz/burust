@@ -1,4 +1,4 @@
-use crate::{graphics::Graphics, renderer::Renderer, ui::pane::{Pane, Drawable, Widget, WidgetWrapper}};
+use crate::{graphics::Graphics, renderer::Renderer, ui::pane::{Pane, WidgetWrapper}, ui::{Drawable, Widget}};
 
 pub struct UIManager {
     panes: Vec<Pane>,

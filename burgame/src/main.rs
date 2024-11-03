@@ -2,7 +2,7 @@ mod example_game;
 
 use std::time::Duration;
 
-use burengine::{self, types::{Dimensions, Rect}, ui::pane::{Pane, SquareWidget}, Color};
+use burengine::{self, types::{Dimensions, Rect}, ui::pane::Pane, ui::square::SquareWidget, Color};
 
 pub fn main() {
     let game = Box::new(example_game::ExampleGame::new());
