@@ -4,9 +4,12 @@ use std::time::Duration;
 
 use burengine::{self, types::{Dimensions, Rect}, ui::pane::Pane, ui::square::SquareWidget, Color};
 
+static SCREEN_WIDTH: u32 = 1280;
+static SCREEN_HEIGHT: u32 = 720;
+
 pub fn main() {
     let game = Box::new(example_game::ExampleGame::new());
-    let mut engine = burengine::engine::Engine::new(game, Dimensions::new(120, 120));
+    let mut engine = burengine::engine::Engine::new(game, Dimensions::new(SCREEN_WIDTH, SCREEN_HEIGHT));
 
     {
         let color = Color::RGB(23, 23, 23);

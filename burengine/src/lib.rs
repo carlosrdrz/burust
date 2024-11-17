@@ -9,5 +9,6 @@ pub mod types;
 mod ui_manager;
 mod graphics;
 mod renderer;
+mod texture_manager;
 
 pub use sdl2::pixels::Color;

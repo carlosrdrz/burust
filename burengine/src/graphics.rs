@@ -1,56 +1,46 @@
+use log::error;
+
 use sdl2::pixels::Color;
 use sdl2::rect::Rect;
-// use sdl2::pixels::Color;
-// use sdl2::event::Event;
-// use sdl2::keyboard::Keycode;
 use sdl2::render::Canvas;
 use sdl2::video::Window;
 use sdl2::VideoSubsystem;
-// use std::time::Duration;
 
 use crate::types::Dimensions;
+use crate::texture_manager::TextureManager;
 
 pub struct Graphics {
     canvas: Box<Canvas<Window>>,
+    texture_manager: TextureManager<'static>,
 }
 
 impl Graphics {
-    pub fn new(dimensions: Dimensions, video_subsystem: VideoSubsystem) -> Graphics {
+    pub fn new(dimensions: Dimensions, video_subsystem: VideoSubsystem) -> Self {
         let window = video_subsystem.window("rust-sdl2 demo", dimensions.width, dimensions.height)
             .position_centered()
             .build()
             .unwrap();
 
         let canvas = window.into_canvas().build().unwrap();
-        Self { canvas: Box::new(canvas) }
+        let texture_creator = canvas.texture_creator();
+        Self { canvas: Box::new(canvas), texture_manager: TextureManager::new(texture_creator) }
     }
-
-    // canvas.set_draw_color(Color::RGB(0, 255, 255));
-    // canvas.clear();
-    // canvas.present();
-    // let mut event_pump = sdl_context.event_pump().unwrap();
-    // let mut i = 0;
-    // 'running: loop {
-    //     i = (i + 1) % 255;
-    //     canvas.set_draw_color(Color::RGB(i, 64, 255 - i));
-    //     canvas.clear();
-    //     for event in event_pump.poll_iter() {
-    //         match event {
-    //             Event::Quit {..} |
-    //             Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
-    //                 break 'running
-    //             },
-    //             _ => {}
-    //         }
-    //     }
-    //     // The rest of the game loop goes here...
-    //     canvas.present();
-    //     ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
-    // }
 
     pub fn draw_rect(&mut self, rect: Rect, color: Color) {
         self.canvas.set_draw_color(color);
         self.canvas.fill_rect(rect).unwrap();
+    }
+
+    pub fn draw_texture(&'static mut self, path: &str, src: Rect, dst: Rect) {
+        let texture = self.texture_manager.get(path);
+        match texture {
+            Ok(texture) => {
+                let _ = self.canvas.copy(&texture, src, dst);
+            }
+            Err(err) => {
+                error!("Couldn't load texture {path}: {err}");
+            }
+        } 
     }
 
     pub fn clear(&mut self) {
