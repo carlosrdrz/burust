@@ -1,7 +1,6 @@
 use std::any::Any;
 
-use sdl2::pixels::Color;
-use crate::{graphics::Graphics, types::Rect};
+use burengine::{graphics::Graphics, types::Rect, Color};
 
 use super::{Drawable, Widget};
 

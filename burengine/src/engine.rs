@@ -6,12 +6,10 @@ use crate::game::Game;
 use crate::graphics::Graphics;
 use crate::renderer::Renderer;
 use crate::types::Dimensions;
-use crate::ui_manager::UIManager;
 
 pub struct Engine {
     game: Box<dyn Game>,
     graphics: Graphics,
-    ui_manager: UIManager,
     event_pump: EventPump,
 }
 
@@ -25,18 +23,13 @@ impl Engine {
         Self {
             game: game,
             graphics: graphics,
-            ui_manager: UIManager::new(Vec::new()),
             event_pump: event_pump,
         }
     }
 
-    pub fn get_ui_manager(&mut self) -> &mut UIManager {
-        &mut self.ui_manager
-    }
-
     pub fn run_loop(&mut self) {
         self.graphics.clear();
-        self.ui_manager.render(0, &mut self.graphics);
+        self.game.main_loop();
         self.graphics.present();
 
         for event in self.event_pump.poll_iter() {

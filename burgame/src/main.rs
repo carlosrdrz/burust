@@ -1,8 +1,10 @@
 mod example_game;
+mod ui;
 
 use std::time::Duration;
 
-use burengine::{self, types::{Dimensions, Rect}, ui::pane::Pane, ui::square::SquareWidget, Color};
+use burengine::{self, types::{Dimensions, Rect}, Color};
+use crate::{ui::pane::Pane, ui::square::SquareWidget};
 
 static SCREEN_WIDTH: u32 = 1280;
 static SCREEN_HEIGHT: u32 = 720;
@@ -19,7 +21,7 @@ pub fn main() {
         let mut pane = Pane::new();
         pane.add_widget(Box::new(widget));
 
-        let ui_manager = engine.get_ui_manager();
+        let ui_manager = game.get_ui_manager();
         ui_manager.add_pane(pane);
     }
 
@@ -27,7 +29,7 @@ pub fn main() {
     while !engine.is_done() {
         i = (i + 1) % 255;
 
-        let ui_manager = engine.get_ui_manager();
+        let ui_manager = game.get_ui_manager();
         let square_widget: &mut SquareWidget = ui_manager.get_pane_widget_as_mut(0, 0);
         square_widget.set_color(Color::RGB(i, 64, 255 - i));
         

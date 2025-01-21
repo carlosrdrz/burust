@@ -1,6 +1,7 @@
 use std::any::Any;
 
-use crate::graphics::Graphics;
+use burengine::graphics::Graphics;
+use burengine::types::Rect;
 
 use super::{Drawable, Widget};
 
@@ -54,6 +55,8 @@ impl Widget for Pane {
 
 impl Drawable for Pane {
     fn draw(&self, graphics: &mut Graphics) {
+        graphics.draw_texture("test", Rect::new(0, 0, 10, 10), Rect::new(0, 0, 10, 10));
+
         for widget in self.widgets.iter() {
             widget.draw(graphics);
         }

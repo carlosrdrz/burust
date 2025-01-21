@@ -2,7 +2,7 @@ pub mod pane;
 pub mod square;
 
 use std::any::Any;
-use crate::graphics::Graphics;
+use burengine::graphics::Graphics;
 
 pub trait Drawable {
     fn draw(&self, graphics: &mut Graphics);
