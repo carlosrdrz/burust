@@ -2,19 +2,19 @@ use log::error;
 
 use sdl2::pixels::Color;
 use sdl2::rect::Rect;
-use sdl2::render::Canvas;
+use sdl2::render::{Canvas, TextureCreator};
 use sdl2::video::Window;
 use sdl2::VideoSubsystem;
 
 use crate::types::Dimensions;
 use crate::texture_manager::TextureManager;
 
-pub struct Graphics {
+pub struct Graphics<'a> {
     canvas: Box<Canvas<Window>>,
-    texture_manager: TextureManager<'static>,
+    texture_manager: TextureManager<'a>,
 }
 
-impl Graphics {
+impl<'a> Graphics<'a> {
     pub fn new(dimensions: Dimensions, video_subsystem: VideoSubsystem) -> Self {
         let window = video_subsystem.window("rust-sdl2 demo", dimensions.width, dimensions.height)
             .position_centered()
@@ -31,7 +31,7 @@ impl Graphics {
         self.canvas.fill_rect(rect).unwrap();
     }
 
-    pub fn draw_texture(&'static mut self, path: &str, src: Rect, dst: Rect) {
+    pub fn draw_texture(&mut self, path: &str, src: Rect, dst: Rect) {
         let texture = self.texture_manager.get(path);
         match texture {
             Ok(texture) => {
@@ -40,7 +40,7 @@ impl Graphics {
             Err(err) => {
                 error!("Couldn't load texture {path}: {err}");
             }
-        } 
+        }
     }
 
     pub fn clear(&mut self) {

@@ -19,7 +19,7 @@ impl WidgetWrapper {
 }
 
 impl Drawable for WidgetWrapper {
-    fn draw(&self, graphics: &mut Graphics) {
+    fn draw<'a>(&self, graphics: &mut Graphics<'a>) {
         self.widget.draw(graphics);
     }
 }
@@ -54,7 +54,7 @@ impl Widget for Pane {
 }
 
 impl Drawable for Pane {
-    fn draw(&self, graphics: &mut Graphics) {
+    fn draw<'a>(&self, graphics: &mut Graphics<'a>) {
         graphics.draw_texture("test", Rect::new(0, 0, 10, 10), Rect::new(0, 0, 10, 10));
 
         for widget in self.widgets.iter() {

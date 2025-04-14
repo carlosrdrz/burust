@@ -4,17 +4,16 @@ use sdl2::EventPump;
 
 use crate::game::Game;
 use crate::graphics::Graphics;
-use crate::renderer::Renderer;
 use crate::types::Dimensions;
 
-pub struct Engine {
+pub struct Engine<'a> {
     game: Box<dyn Game>,
-    graphics: Graphics,
+    graphics: Graphics<'a>,
     event_pump: EventPump,
 }
 
-impl Engine {
-    pub fn new(game: Box<dyn Game>, window_dimensions: Dimensions) -> Engine {
+impl<'a> Engine<'a> {
+    pub fn new(game: Box<dyn Game>, window_dimensions: Dimensions) -> Engine<'a> {
         let sdl_context = sdl2::init().unwrap();
         let video_subsystem = sdl_context.video().unwrap();
         let graphics = Graphics::new(window_dimensions, video_subsystem);
@@ -25,6 +24,10 @@ impl Engine {
             graphics: graphics,
             event_pump: event_pump,
         }
+    }
+
+    pub fn init(&mut self) {
+        self.game.init();
     }
 
     pub fn run_loop(&mut self) {

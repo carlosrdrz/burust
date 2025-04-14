@@ -1,4 +1,5 @@
-use crate::{graphics::Graphics, renderer::Renderer, ui::pane::{Pane, WidgetWrapper}, ui::{Drawable, Widget}};
+use burengine::{graphics::Graphics, renderer::Renderer};
+use crate::{ui::pane::{Pane, WidgetWrapper}, ui::{Drawable, Widget}};
 
 pub struct UIManager {
     panes: Vec<Pane>,
@@ -31,7 +32,7 @@ impl UIManager {
 }
 
 impl Renderer for UIManager {
-    fn render(&self, _layer: u16, graphics: &mut Graphics) {
+    fn render<'a>(&self, _layer: u16, graphics: &mut Graphics<'a>) {
         for pane in self.panes.iter() {
             pane.draw(graphics);
         }
