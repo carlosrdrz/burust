@@ -32,7 +32,7 @@ impl UIManager {
 }
 
 impl Renderer for UIManager {
-    fn render<'a>(&self, _layer: u16, graphics: &mut Graphics<'a>) {
+    fn render(&self, _layer: u16, graphics: &mut Graphics) {
         for pane in self.panes.iter() {
             pane.draw(graphics);
         }

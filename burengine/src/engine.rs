@@ -6,14 +6,14 @@ use crate::game::Game;
 use crate::graphics::Graphics;
 use crate::types::Dimensions;
 
-pub struct Engine<'a> {
+pub struct Engine {
     game: Box<dyn Game>,
-    graphics: Graphics<'a>,
+    graphics: Graphics,
     event_pump: EventPump,
 }
 
-impl<'a> Engine<'a> {
-    pub fn new(game: Box<dyn Game>, window_dimensions: Dimensions) -> Engine<'a> {
+impl Engine {
+    pub fn new(game: Box<dyn Game>, window_dimensions: Dimensions) -> Engine {
         let sdl_context = sdl2::init().unwrap();
         let video_subsystem = sdl_context.video().unwrap();
         let graphics = Graphics::new(window_dimensions, video_subsystem);
@@ -33,6 +33,7 @@ impl<'a> Engine<'a> {
     pub fn run_loop(&mut self) {
         self.graphics.clear();
         self.game.main_loop();
+        self.game.render(&mut self.graphics);
         self.graphics.present();
 
         for event in self.event_pump.poll_iter() {

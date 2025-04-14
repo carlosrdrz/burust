@@ -30,7 +30,7 @@ impl Widget for SquareWidget {
 }
 
 impl Drawable for SquareWidget {
-    fn draw<'a>(&self, graphics: &mut Graphics<'a>) {
+    fn draw(&self, graphics: &mut Graphics) {
         graphics.draw_rect(self.position, self.color);
     }
 }

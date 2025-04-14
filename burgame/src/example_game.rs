@@ -1,5 +1,6 @@
 use burengine::game::Game;
-
+use burengine::graphics::Graphics;
+use burengine::renderer::Renderer;
 use burengine::{self, types::Rect, Color};
 use crate::{ui::pane::Pane, ui::square::SquareWidget};
 
@@ -19,10 +20,6 @@ impl ExampleGame {
             i: 0,
         }
     }
-
-    pub fn get_ui_manager(&mut self) -> &mut UIManager {
-        &mut self.ui_manager
-    }
 }
 
 impl Game for ExampleGame {
@@ -40,6 +37,10 @@ impl Game for ExampleGame {
         self.i = (self.i + 1) % 255;
         let square_widget: &mut SquareWidget = self.ui_manager.get_pane_widget_as_mut(0, 0);
         square_widget.set_color(Color::RGB(self.i, 64, 255 - self.i));
+    }
+
+    fn render(&self, graphics: &mut Graphics) {
+        self.ui_manager.render(0, graphics);
     }
 
     fn end(&mut self) {
