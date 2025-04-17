@@ -1,5 +1,5 @@
 use burengine::{graphics::Graphics, renderer::Renderer};
-use crate::{ui::pane::{Pane, WidgetWrapper}, ui::{Drawable, Widget}};
+use crate::{ui::pane::{Pane, WidgetBox}, ui::{Drawable, Widget}};
 
 pub struct UIManager {
     panes: Vec<Pane>,
@@ -14,13 +14,13 @@ impl UIManager {
         self.panes.push(pane)
     }
 
-    pub fn get_pane(&mut self, id: usize) -> &mut Pane {
+    pub fn get_pane_mut(&mut self, id: usize) -> &mut Pane {
         let val = self.panes.get_mut(id).unwrap();
         &mut *val
     }
 
-    pub fn get_pane_widget_mut(&mut self, pane_id: usize, widget_id: usize) -> &mut WidgetWrapper {
-        return self.get_pane(pane_id).get_widget_mut(widget_id)
+    pub fn get_pane_widget_mut(&mut self, pane_id: usize, widget_id: usize) -> &mut WidgetBox {
+        return self.get_pane_mut(pane_id).get_widget_mut(widget_id)
     }
 
     pub fn get_pane_widget_as_mut<T>(&mut self, pane_id: usize, widget_id: usize) -> &mut T
