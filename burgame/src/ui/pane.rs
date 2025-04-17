@@ -24,9 +24,15 @@ const CORNER_SPRITES: [(i32, i32); 4] = [
     (78, 0),  // Bottom-left
     (52, 0),  // Bottom-right
 ];
+const CORNER_OFFSETS: [(i32, i32); 4] = [
+    (-(CORNER_OFFSET as i32), -(CORNER_OFFSET as i32)),
+    (CORNER_OFFSET as i32, -(CORNER_OFFSET as i32)),
+    (-(CORNER_OFFSET as i32), CORNER_OFFSET as i32),
+    (CORNER_OFFSET as i32, CORNER_OFFSET as i32),
+];
 
 lazy_static! {
-    static ref SPRITE_RECTS: (Rect, Rect, [Rect; 4], [(i32, i32); 4]) = {
+    static ref SPRITE_RECTS: (Rect, Rect, [Rect; 4]) = {
         let vertical = Rect::new(VERTICAL_BORDER_X, VERTICAL_BORDER_Y, 1, CORNER_SIZE);
         let horizontal = Rect::new(HORIZONTAL_BORDER_X, HORIZONTAL_BORDER_Y, CORNER_SIZE, 1);
         let corners = [
@@ -35,13 +41,7 @@ lazy_static! {
             Rect::new(CORNER_SPRITES[2].0, CORNER_SPRITES[2].1, CORNER_SIZE, CORNER_SIZE),   // Bottom-left
             Rect::new(CORNER_SPRITES[3].0, CORNER_SPRITES[3].1, CORNER_SIZE, CORNER_SIZE),   // Bottom-right
         ];
-        let corner_offsets = [
-            (-(CORNER_OFFSET as i32), -(CORNER_OFFSET as i32)),
-            (CORNER_OFFSET as i32, -(CORNER_OFFSET as i32)),
-            (-(CORNER_OFFSET as i32), CORNER_OFFSET as i32),
-            (CORNER_OFFSET as i32, CORNER_OFFSET as i32),
-        ];
-        (vertical, horizontal, corners, corner_offsets)
+        (vertical, horizontal, corners)
     };
 }
 
@@ -88,7 +88,7 @@ impl Pane {
     }
 
     fn draw_border(&self, graphics: &mut Graphics, is_horizontal: bool) {
-        let (vertical, horizontal, _, _) = &*SPRITE_RECTS;
+        let (vertical, horizontal, _) = &*SPRITE_RECTS;
         let (src, positions) = if is_horizontal {
             let src = *vertical;
             let positions = [
@@ -138,9 +138,9 @@ impl Pane {
     }
 
     fn draw_corner(&self, graphics: &mut Graphics, corner_index: usize, x: i32, y: i32) {
-        let (_, _, corners, corners_offsets) = &*SPRITE_RECTS;
+        let (_, _, corners) = &*SPRITE_RECTS;
         let src = corners[corner_index];
-        let offsets = corners_offsets[corner_index];
+        let offsets = CORNER_OFFSETS[corner_index];
         let dst = Rect::new(x + offsets.0, y + offsets.1, CORNER_SIZE, CORNER_SIZE);
         graphics.draw_texture("resources/sprites/gui.png", src, dst);
     }
