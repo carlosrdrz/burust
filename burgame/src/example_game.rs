@@ -25,10 +25,10 @@ impl ExampleGame {
 impl Game for ExampleGame {
     fn init(&mut self) {
         let color = Color::RGB(23, 23, 23);
-        let position = Rect::new(10, 10, 100, 100);
+        let position = Rect::new(300, 300, 100, 100);
         let widget = SquareWidget::new(color, position);
 
-        let mut pane = Pane::new();
+        let mut pane = Pane::new(10, 10, 250, 250);
         pane.add_widget(Box::new(widget));
         self.ui_manager.add_pane(pane);
     }

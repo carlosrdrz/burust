@@ -11,3 +11,4 @@ impl Dimensions {
 
 pub use sdl2::rect::Point;
 pub use sdl2::rect::Rect;
+pub use sdl2::pixels::Color;
