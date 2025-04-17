@@ -45,22 +45,20 @@ lazy_static! {
     };
 }
 
-pub struct WidgetWrapper {
-    widget: Box<dyn Widget>,
-}
+pub struct WidgetBox(Box<dyn Widget>);
 
-impl WidgetWrapper {
+impl WidgetBox {
     pub fn as_mut_widget<T>(&mut self) -> &mut T
     where
         T: Widget + 'static,
     {
-        return self.widget.as_mut_any().downcast_mut::<T>().unwrap()
+        return self.0.as_mut_any().downcast_mut::<T>().unwrap()
     }
 }
 
-impl Drawable for WidgetWrapper {
+impl Drawable for WidgetBox {
     fn draw(&self, graphics: &mut Graphics) {
-        self.widget.draw(graphics);
+        self.0.draw(graphics);
     }
 }
 
@@ -70,7 +68,7 @@ pub struct Pane {
     width: u32,
     height: u32,
     color: Color,
-    widgets: Vec<WidgetWrapper>,
+    widgets: Vec<WidgetBox>,
 }
 
 impl Pane {
@@ -79,11 +77,11 @@ impl Pane {
     }
 
     pub fn add_widget(&mut self, widget: Box<dyn Widget>) {
-        let wrapper = WidgetWrapper { widget };
+        let wrapper = WidgetBox(widget);
         self.widgets.push(wrapper)
     }
 
-    pub fn get_widget_mut(&mut self, id: usize) -> &mut WidgetWrapper {
+    pub fn get_widget_mut(&mut self, id: usize) -> &mut WidgetBox {
         return self.widgets.get_mut(id).unwrap()
     }
 
