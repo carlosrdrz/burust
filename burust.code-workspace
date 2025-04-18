@@ -3,6 +3,9 @@
 		{
 			"name": "burust",
 			"path": "."
+		},
+		{
+			"path": "../bure"
 		}
 	],
 	"settings": {

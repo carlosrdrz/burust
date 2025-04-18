@@ -6,7 +6,9 @@
         "border_offset": 13,
         "bg_padding": 3
       },
-      "default_color": [114, 107, 82, 255],
+      "defaults": {
+        "background_color": [114, 107, 82, 255]
+      },
       "sprites": {
         "vertical_border": [104, 0, 1, 26],
         "horizontal_border": [130, 0, 26, 1],
@@ -14,6 +16,40 @@
         "top_right": [0, 0, 26, 26],
         "bottom_left": [78, 0, 26, 26],
         "bottom_right": [52, 0, 26, 26]
+      }
+    },
+    "button": {
+      "defaults": {
+        "background_color": [180, 180, 180, 255],
+        "text_color": [0, 0, 0, 255]
+      },
+      "sprites": {
+        "background": [156, 0, 26, 26]
+      }
+    },
+    "label": {
+      "defaults": {
+        "text_color": [255, 255, 255, 255]
+      }
+    },
+    "input_box": {
+      "defaults": {
+        "background_color": [255, 255, 255, 255],
+        "text_color": [0, 0, 0, 255],
+        "placeholder_color": [150, 150, 150, 255],
+        "border_color": [100, 100, 100, 255]
+      }
+    },
+    "selector": {
+      "defaults": {
+        "background_color": [180, 180, 180, 255],
+        "text_color": [0, 0, 0, 255],
+        "arrow_color": [50, 50, 50, 255]
+      },
+      "sprites": {
+        "background": [156, 0, 26, 26],
+        "left_arrow": [182, 0, 10, 10],
+        "right_arrow": [192, 0, 10, 10]
       }
     }
   }

@@ -16,13 +16,12 @@ pub struct Pane {
 
 impl Pane {
     pub fn new(x: i32, y: i32, width: u32, height: u32) -> Pane {
-        let bg_color = UI_CONFIG.widgets.pane.default_color;
         Self { 
             x, 
             y, 
             width, 
             height, 
-            color: Color::RGBA(bg_color[0], bg_color[1], bg_color[2], bg_color[3]), 
+            color: Color::from_array(UI_CONFIG.widgets.pane.defaults.background_color), 
             widgets: Vec::new() 
         }
     }

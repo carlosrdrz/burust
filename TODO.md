@@ -1,0 +1,1 @@
+- Widgets setters for positions, so we can cache rects/color objects

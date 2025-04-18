@@ -5,6 +5,7 @@ pub mod engine;
 pub mod game;
 pub mod types;
 pub mod graphics;
+pub mod text;
 
 pub mod renderer;
 mod texture_manager;

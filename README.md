@@ -101,7 +101,7 @@ If you need to update the SDL2 dependencies:
 
 ```bash
 brew update
-brew upgrade sdl2 sdl2_image
+brew install sdl2 sdl2_image sdl2_ttf
 ```
 
 ## Troubleshooting

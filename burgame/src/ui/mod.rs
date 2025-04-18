@@ -4,6 +4,11 @@ mod renderer;
 
 pub mod pane;
 pub mod square;
+pub mod button;
+pub mod image;
+pub mod input_box;
+pub mod label;
+pub mod selector;
 
 use burengine::graphics::Graphics;
 use as_any::AsAny;
