@@ -1,0 +1,20 @@
+{
+  "widgets": {
+    "pane": {
+      "dimensions": {
+        "corner_size": 26,
+        "border_offset": 13,
+        "bg_padding": 3
+      },
+      "default_color": [114, 107, 82, 255],
+      "sprites": {
+        "vertical_border": [104, 0, 1, 26],
+        "horizontal_border": [130, 0, 26, 1],
+        "top_left": [26, 0, 26, 26],
+        "top_right": [0, 0, 26, 26],
+        "bottom_left": [78, 0, 26, 26],
+        "bottom_right": [52, 0, 26, 26]
+      }
+    }
+  }
+} 

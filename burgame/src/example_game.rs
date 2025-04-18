@@ -1,7 +1,7 @@
 use burengine::game::Game;
 use burengine::graphics::Graphics;
 use burengine::renderer::Renderer;
-use burengine::{self, types::Rect, Color};
+use burengine::{self, types::Color};
 use crate::{ui::pane::Pane, ui::square::SquareWidget};
 
 use crate::ui_manager::UIManager;
@@ -25,12 +25,15 @@ impl ExampleGame {
 impl Game for ExampleGame {
     fn init(&mut self) {
         let color = Color::RGB(23, 23, 23);
-        let position = Rect::new(300, 300, 100, 100);
-        let widget = SquareWidget::new(color, position);
+        let widget = SquareWidget::new(20, 20, 460, 460, color);
 
-        let mut pane = Pane::new(10, 10, 250, 250);
+        let mut pane = Pane::new(10, 10, 500, 500);
         pane.add_widget(Box::new(widget));
         self.ui_manager.add_pane(pane);
+
+        let color = Color::RGB(255, 255, 255);
+        let widget = SquareWidget::new(530, 10, 200, 200, color);
+        self.ui_manager.add_widget(Box::new(widget));
     }
 
     fn main_loop(&mut self) {
