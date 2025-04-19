@@ -1,4 +1,4 @@
-use burengine::{graphics::Graphics, types::Rect};
+use crate::{graphics::Graphics, types::Rect};
 
 use super::{Draw, DrawingContext, Widget};
 

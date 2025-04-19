@@ -1,5 +1,4 @@
-use burengine::{graphics::Graphics, types::{Color, Rect}};
-
+use crate::{graphics::Graphics, types::{Color, Rect}};
 use super::{Draw, DrawingContext, Widget};
 
 pub struct Square {

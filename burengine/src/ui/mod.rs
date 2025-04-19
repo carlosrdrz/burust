@@ -9,28 +9,22 @@ pub mod image;
 pub mod input_box;
 pub mod label;
 pub mod selector;
+pub mod manager;
 
-use burengine::graphics::Graphics;
+use crate::graphics::Graphics;
+use config::UIConfig;
 use as_any::AsAny;
 
 pub trait Draw {
     fn draw(&self, graphics: &mut Graphics, context: &DrawingContext);
 }
 
-pub struct DrawingContext {
+#[derive(Clone)]
+pub struct DrawingContext<'a> {
     pub scale: f32,
     pub parent_x: i32,
     pub parent_y: i32,
-}
-
-impl Clone for DrawingContext {
-    fn clone(&self) -> Self {
-        Self {
-            scale: self.scale,
-            parent_x: self.parent_x,
-            parent_y: self.parent_y,
-        }
-    }
+    pub config: &'a UIConfig,
 }
 
 pub trait Widget: Draw + AsAny {}

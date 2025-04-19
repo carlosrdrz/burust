@@ -1,4 +1,4 @@
-use burengine::types::Rect;
+use crate::types::Rect;
 use super::config::PaneConfig;
 
 pub struct PaneLayout {

@@ -6,8 +6,8 @@ pub mod game;
 pub mod types;
 pub mod graphics;
 pub mod text;
+pub mod ui;
 
 pub mod renderer;
 mod texture_manager;
 
-pub use sdl2::pixels::Color;

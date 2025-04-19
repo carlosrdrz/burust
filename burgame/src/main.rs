@@ -1,6 +1,4 @@
 mod example_game;
-mod ui;
-mod ui_manager;
 
 use std::time::Duration;
 use burengine::types::Dimensions;

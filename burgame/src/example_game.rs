@@ -2,27 +2,22 @@ use burengine::game::Game;
 use burengine::graphics::Graphics;
 use burengine::renderer::Renderer;
 use burengine::{self, types::Color};
-use crate::ui::pane::Pane;
-use crate::ui::{square::Square, label::Label, button::Button, 
+use burengine::ui::{manager::Manager, pane::Pane, square::Square, label::Label, button::Button, 
                 input_box::InputBox, selector::Selector, image::Image};
-use crate::ui_manager::UIManager;
 
+const UI_CONFIG_PATH: &str = "resources/ui_config.json";
 pub struct ExampleGame {
-    ui_manager: UIManager,
+    ui_manager: Manager,
     finished: bool,
-    i: u8,
     counter: u32,
-    selected_option: String,
 }
 
 impl ExampleGame {
     pub fn new() -> ExampleGame {
         Self {
-            ui_manager: UIManager::new(Vec::new()),
+            ui_manager: Manager::new(UI_CONFIG_PATH),
             finished: false,
-            i: 0,
             counter: 0,
-            selected_option: "Option 1".to_string(),
         }
     }
 }
@@ -37,7 +32,7 @@ impl Game for ExampleGame {
         self.ui_manager.add_pane(main_pane);
 
         // Right panel with all other widgets
-        let mut right_pane = Pane::new(520, 0, 220, 400);
+        let mut right_pane = Pane::new(520, 10, 220, 400);
 
         // Label widget
         let label = Label::new(10, 10, 200, 30, "Hello, World!");
@@ -65,9 +60,10 @@ impl Game for ExampleGame {
 
     fn main_loop(&mut self) {
         // Animate the square color
-        self.i = (self.i + 1) % 255;
+        let color_r = (self.counter % 255) as u8;
+        let color_b = (255 - self.counter % 255) as u8;
         let square_widget: &mut Square = self.ui_manager.get_pane_widget_as_mut(0, 0);
-        square_widget.set_color(Color::RGB(self.i, 64, 255 - self.i));
+        square_widget.set_color(Color::RGB(color_r, 64, color_b));
 
         // Update label text
         let label: &mut Label = self.ui_manager.get_pane_widget_as_mut(1, 0);
@@ -77,12 +73,6 @@ impl Game for ExampleGame {
         // Update button state based on counter
         let button: &mut Button = self.ui_manager.get_pane_widget_as_mut(1, 1);
         button.set_pressed(self.counter % 100 < 50);
-
-        // Get selected option from selector
-        let selector: &mut Selector = self.ui_manager.get_pane_widget_as_mut(1, 3);
-        if let Some(option) = selector.get_selected_option() {
-            self.selected_option = option.to_string();
-        }
     }
 
     fn render(&self, graphics: &mut Graphics) {

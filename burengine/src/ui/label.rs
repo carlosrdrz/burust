@@ -1,5 +1,4 @@
-use burengine::{graphics::Graphics, types::{Color, Rect}};
-use crate::ui::config::UI_CONFIG;
+use crate::{graphics::Graphics, types::{Color, Rect}};
 
 use super::{Draw, DrawingContext, Widget};
 
@@ -9,7 +8,6 @@ pub struct Label {
     width: u32,
     height: u32,
     text: String,
-    text_color: Color,
 }
 
 impl Widget for Label {}
@@ -22,13 +20,7 @@ impl Label {
             width,
             height,
             text: text.to_string(),
-            text_color: Color::from_array(UI_CONFIG.widgets.label.defaults.text_color),
         }
-    }
-
-    #[allow(dead_code)]
-    pub fn set_color(mut self, color: Color) {
-        self.text_color = color;
     }
 
     pub fn set_text(&mut self, text: &str) {
@@ -41,6 +33,7 @@ impl Draw for Label {
         let scale = context.scale;
         let x = self.x + context.parent_x;
         let y = self.y + context.parent_y;
+        let text_color = Color::from_array(context.config.widgets.label.defaults.text_color);
         
         // Create base rect and scale it
         let base_rect = Rect::new(x, y, self.width, self.height);
@@ -56,7 +49,7 @@ impl Draw for Label {
             text_x,
             text_y,
             text_scale,
-            self.text_color,
+            text_color,
         );
     }
 } 

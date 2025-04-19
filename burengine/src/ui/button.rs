@@ -1,5 +1,4 @@
-use burengine::{graphics::Graphics, types::{Color, Rect}};
-use crate::ui::config::UI_CONFIG;
+use crate::{graphics::Graphics, types::{Color, Rect}};
 
 use super::{Draw, DrawingContext, Widget};
 
@@ -9,8 +8,6 @@ pub struct Button {
     width: u32,
     height: u32,
     text: String,
-    background_color: Color,
-    text_color: Color,
     is_pressed: bool,
 }
 
@@ -24,8 +21,6 @@ impl Button {
             width,
             height,
             text: text.to_string(),
-            background_color: Color::from_array(UI_CONFIG.widgets.button.defaults.background_color),
-            text_color: Color::from_array(UI_CONFIG.widgets.button.defaults.text_color),
             is_pressed: false,
         }
     }
@@ -49,21 +44,24 @@ impl Draw for Button {
         // Create base rect and scale it
         let base_rect = Rect::new(x, y, self.width, self.height);
         let scaled_rect = base_rect.scale(scale);
+
+        let background_color = Color::from_array(context.config.widgets.button.defaults.background_color);
+        let text_color = Color::from_array(context.config.widgets.button.defaults.text_color);
         
         // Draw background
         let bg_color = if self.is_pressed {
             // Darken color when pressed
-            let r = (self.background_color.r as f32 * 0.8) as u8;
-            let g = (self.background_color.g as f32 * 0.8) as u8;
-            let b = (self.background_color.b as f32 * 0.8) as u8;
-            Color::RGBA(r, g, b, self.background_color.a)
+            let r = (background_color.r as f32 * 0.8) as u8;
+            let g = (background_color.g as f32 * 0.8) as u8;
+            let b = (background_color.b as f32 * 0.8) as u8;
+            Color::RGBA(r, g, b, background_color.a)
         } else {
-            self.background_color
+            background_color
         };
         
         // Draw the button background
         graphics.draw_rect(scaled_rect, bg_color);
-        graphics.draw_rect_outline(scaled_rect, self.text_color, 1);
+        graphics.draw_rect_outline(scaled_rect, text_color, 1);
         
         // Draw text centered on button
         let text_scale = scale * 1.0;
@@ -72,7 +70,7 @@ impl Draw for Button {
             scaled_rect.x + (scaled_rect.width / 2) as i32,
             scaled_rect.y + (scaled_rect.height / 2) as i32,
             text_scale,
-            self.text_color,
+            text_color,
         );
     }
 } 

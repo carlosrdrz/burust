@@ -4,6 +4,16 @@ use std::fs;
 #[derive(Debug, Deserialize)]
 pub struct UIConfig {
     pub widgets: WidgetConfigs,
+    pub img_path: String,
+}
+
+impl UIConfig {
+    pub fn load(config_path: &str) -> Self {
+        let config_str = fs::read_to_string(config_path)
+            .expect("Failed to read UI config file");
+        serde_json::from_str(&config_str)
+            .expect("Failed to parse UI config file")
+    }
 }
 
 #[derive(Debug, Deserialize)]
@@ -95,12 +105,3 @@ pub struct SelectorSprites {
     pub left_arrow: [i32; 4],
     pub right_arrow: [i32; 4],
 }
-
-lazy_static::lazy_static! {
-    pub static ref UI_CONFIG: UIConfig = {
-        let config_str = fs::read_to_string("resources/ui_config.json")
-            .expect("Failed to read UI config file");
-        serde_json::from_str(&config_str)
-            .expect("Failed to parse UI config file")
-    };
-} 

@@ -1,5 +1,4 @@
-use burengine::{graphics::Graphics, types::{Color, Rect}};
-use crate::ui::config::UI_CONFIG;
+use crate::{graphics::Graphics, types::{Color, Rect}};
 
 use super::{Draw, DrawingContext, Widget};
 
@@ -10,10 +9,6 @@ pub struct InputBox {
     height: u32,
     text: String,
     placeholder: String,
-    text_color: Color,
-    placeholder_color: Color,
-    background_color: Color,
-    border_color: Color,
     cursor_position: usize,
     is_focused: bool,
     cursor_blink_timer: f32,
@@ -24,8 +19,6 @@ impl Widget for InputBox {}
 
 impl InputBox {
     pub fn new(x: i32, y: i32, width: u32, height: u32, placeholder: &str) -> Self {
-        let config = &UI_CONFIG.widgets.input_box.defaults;
-        
         Self {
             x,
             y,
@@ -33,10 +26,6 @@ impl InputBox {
             height,
             text: String::new(),
             placeholder: placeholder.to_string(),
-            text_color: Color::from_array(config.text_color),
-            placeholder_color: Color::from_array(config.placeholder_color),
-            background_color: Color::from_array(config.background_color),
-            border_color: Color::from_array(config.border_color),
             cursor_position: 0,
             is_focused: false,
             cursor_blink_timer: 0.0,
@@ -106,16 +95,22 @@ impl Draw for InputBox {
         let x = self.x + context.parent_x;
         let y = self.y + context.parent_y;
         
+        let config = &context.config.widgets.input_box.defaults;
+        let text_color = Color::from_array(config.text_color);
+        let placeholder_color = Color::from_array(config.placeholder_color);
+        let background_color = Color::from_array(config.background_color);
+        let border_color = Color::from_array(config.border_color);
+        
         // Create base rect and scale it
         let base_rect = Rect::new(x, y, self.width, self.height);
         let scaled_rect = base_rect.scale(scale);
         
         // Draw background
-        graphics.draw_rect(scaled_rect, self.background_color);
+        graphics.draw_rect(scaled_rect, background_color);
         
         // Draw border
         let border_thickness = 1;
-        graphics.draw_rect_outline(scaled_rect, self.border_color, border_thickness);
+        graphics.draw_rect_outline(scaled_rect, border_color, border_thickness);
         
         // Draw text or placeholder
         let text_padding = (5.0 * scale) as i32;
@@ -127,7 +122,7 @@ impl Draw for InputBox {
                 scaled_rect.x + text_padding,
                 text_y,
                 scale,
-                self.placeholder_color,
+                placeholder_color,
             );
         } else {
             graphics.draw_text(
@@ -135,7 +130,7 @@ impl Draw for InputBox {
                 scaled_rect.x + text_padding,
                 text_y,
                 scale,
-                self.text_color,
+                text_color,
             );
             
             if self.is_focused && self.show_cursor {
@@ -144,7 +139,7 @@ impl Draw for InputBox {
                 let approx_char_width = 8.0 * scale;
                 let cursor_x = scaled_rect.x + text_padding + (self.cursor_position as f32 * approx_char_width) as i32;
                 let cursor_rect = Rect::new(cursor_x, scaled_rect.y, 1, scaled_rect.height);
-                graphics.draw_rect(cursor_rect, self.text_color);
+                graphics.draw_rect(cursor_rect, text_color);
             }
         }
     }

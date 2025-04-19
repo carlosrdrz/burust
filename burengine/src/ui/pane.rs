@@ -1,8 +1,7 @@
-use burengine::graphics::Graphics;
-use burengine::types::Color;
+use crate::graphics::Graphics;
+use crate::types::Color;
 
 use super::{Draw, Widget, WidgetBox, DrawingContext};
-use super::config::UI_CONFIG;
 use super::renderer::PaneRenderer;
 
 pub struct Pane {
@@ -10,7 +9,6 @@ pub struct Pane {
     y: i32,
     width: u32,
     height: u32,
-    color: Color,
     widgets: Vec<WidgetBox>,
 }
 
@@ -21,7 +19,6 @@ impl Pane {
             y, 
             width, 
             height, 
-            color: Color::from_array(UI_CONFIG.widgets.pane.defaults.background_color), 
             widgets: Vec::new() 
         }
     }
@@ -42,8 +39,9 @@ impl Draw for Pane {
         let scale = context.scale;
         
         // Create renderer and draw pane
-        let renderer = PaneRenderer::new(self.x, self.y, self.width, self.height, self.color);
-        renderer.draw(graphics, &UI_CONFIG.widgets.pane, scale);
+        let color = Color::from_array(context.config.widgets.pane.defaults.background_color);
+        let renderer = PaneRenderer::new(self.x, self.y, self.width, self.height, color);
+        renderer.draw(graphics, context, scale);
 
         // Draw child widgets
         for widget in self.widgets.iter() {

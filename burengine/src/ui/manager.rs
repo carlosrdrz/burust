@@ -1,14 +1,17 @@
-use burengine::{graphics::Graphics, renderer::Renderer};
+use crate::{graphics::Graphics, renderer::Renderer};
 use crate::{ui::pane::Pane, ui::{Widget, Draw, WidgetBox, DrawingContext}};
 
-pub struct UIManager {
+use super::config::UIConfig;
+
+pub struct Manager {
     panes: Vec<Pane>,
     widgets: Vec<WidgetBox>,
+    config: UIConfig,
 }
 
-impl UIManager {
-    pub fn new(panes: Vec<Pane>) -> UIManager {
-        Self { panes, widgets: Vec::new() }
+impl Manager {
+    pub fn new(config_path: &str) -> Self {
+        Self { panes: Vec::new(), widgets: Vec::new(), config: UIConfig::load(config_path) }
     }
 
     pub fn add_pane(&mut self, pane: Pane) {
@@ -38,9 +41,9 @@ impl UIManager {
     }
 }
 
-impl Renderer for UIManager {
+impl Renderer for Manager {
     fn render(&self, _layer: u16, graphics: &mut Graphics) {
-        let context = DrawingContext { parent_x: 0, parent_y: 0, scale: 1.0 };
+        let context = DrawingContext { parent_x: 0, parent_y: 0, scale: 1.0, config: &self.config };
         
         for pane in self.panes.iter() {
             pane.draw(graphics, &context);
