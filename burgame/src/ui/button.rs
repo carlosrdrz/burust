@@ -4,11 +4,11 @@ use crate::ui::config::UI_CONFIG;
 use super::{Draw, DrawingContext, Widget};
 
 pub struct Button {
-    pub x: i32,
-    pub y: i32,
-    pub width: u32,
-    pub height: u32,
-    pub text: String,
+    x: i32,
+    y: i32,
+    width: u32,
+    height: u32,
+    text: String,
     background_color: Color,
     text_color: Color,
     is_pressed: bool,
@@ -33,7 +33,8 @@ impl Button {
     pub fn set_pressed(&mut self, pressed: bool) {
         self.is_pressed = pressed;
     }
-
+    
+    #[allow(dead_code)]
     pub fn is_pressed(&self) -> bool {
         self.is_pressed
     }
@@ -60,16 +61,13 @@ impl Draw for Button {
             self.background_color
         };
         
-        // Draw button background with rounded corners
-        let button_sprite = &UI_CONFIG.widgets.button.sprites;
-        
         // Draw the button background
-        let src = Rect::from_array(button_sprite.background);
-        graphics.draw_texture("resources/sprites/gui.png", src.to_sdl(), scaled_rect.to_sdl());
+        graphics.draw_rect(scaled_rect, bg_color);
+        graphics.draw_rect_outline(scaled_rect, self.text_color, 1);
         
         // Draw text centered on button
         let text_scale = scale * 1.0;
-        graphics.draw_text(
+        graphics.draw_text_centered(
             &self.text,
             scaled_rect.x + (scaled_rect.width / 2) as i32,
             scaled_rect.y + (scaled_rect.height / 2) as i32,

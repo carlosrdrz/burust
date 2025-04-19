@@ -19,7 +19,7 @@ impl PaneRenderer {
     pub fn draw(&self, graphics: &mut Graphics, config: &PaneConfig, scale: f32) {
         // Draw background
         let bg_rect = self.layout.get_background_rect(config).scale(scale);
-        graphics.draw_rect(bg_rect.to_sdl(), self.color);
+        graphics.draw_rect(bg_rect, self.color);
 
         // Draw borders
         let (top_border, bottom_border) = self.layout.get_horizontal_border_rects(config);
@@ -28,10 +28,10 @@ impl PaneRenderer {
         let vertical_src = Rect::from_array(config.sprites.vertical_border);
         let horizontal_src = Rect::from_array(config.sprites.horizontal_border);
         
-        graphics.draw_texture("resources/sprites/gui.png", vertical_src.to_sdl(), top_border.scale(scale).to_sdl());
-        graphics.draw_texture("resources/sprites/gui.png", vertical_src.to_sdl(), bottom_border.scale(scale).to_sdl());
-        graphics.draw_texture("resources/sprites/gui.png", horizontal_src.to_sdl(), left_border.scale(scale).to_sdl());
-        graphics.draw_texture("resources/sprites/gui.png", horizontal_src.to_sdl(), right_border.scale(scale).to_sdl());
+        graphics.draw_texture("resources/sprites/gui.png", vertical_src, top_border.scale(scale));
+        graphics.draw_texture("resources/sprites/gui.png", vertical_src, bottom_border.scale(scale));
+        graphics.draw_texture("resources/sprites/gui.png", horizontal_src, left_border.scale(scale));
+        graphics.draw_texture("resources/sprites/gui.png", horizontal_src, right_border.scale(scale));
 
         // Draw corners
         let corner_sprites = [
@@ -44,7 +44,7 @@ impl PaneRenderer {
         for i in 0..4 {
             let corner_rect = self.layout.get_corner_rect(i, config);
             let src = Rect::from_array(*corner_sprites[i]);
-            graphics.draw_texture("resources/sprites/gui.png", src.to_sdl(), corner_rect.scale(scale).to_sdl());
+            graphics.draw_texture("resources/sprites/gui.png", src, corner_rect.scale(scale));
         }
     }
 } 

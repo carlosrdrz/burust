@@ -58,10 +58,12 @@ pub struct Color {
 }
 
 impl Color {
+    #[allow(non_snake_case)]
     pub const fn RGBA(r: u8, g: u8, b: u8, a: u8) -> Self {
         Self { r, g, b, a }
     }
 
+    #[allow(non_snake_case)]
     pub const fn RGB(r: u8, g: u8, b: u8) -> Self {
         Self { r, g, b, a: 255 }
     }

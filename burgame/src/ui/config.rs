@@ -47,18 +47,12 @@ pub struct PaneSprites {
 #[derive(Debug, Deserialize)]
 pub struct ButtonConfig {
     pub defaults: ButtonDefaults,
-    pub sprites: ButtonSprites,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct ButtonDefaults {
     pub background_color: [u8; 4],
     pub text_color: [u8; 4],
-}
-
-#[derive(Debug, Deserialize)]
-pub struct ButtonSprites {
-    pub background: [i32; 4],
 }
 
 #[derive(Debug, Deserialize)]
@@ -92,9 +86,7 @@ pub struct SelectorConfig {
 
 #[derive(Debug, Deserialize)]
 pub struct SelectorDefaults {
-    pub background_color: [u8; 4],
     pub text_color: [u8; 4],
-    pub arrow_color: [u8; 4],
 }
 
 #[derive(Debug, Deserialize)]

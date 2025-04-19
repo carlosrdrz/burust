@@ -1,11 +1,10 @@
 use log::error;
 
-use sdl2::rect::Rect;
 use sdl2::render::Canvas;
 use sdl2::video::Window;
 use sdl2::VideoSubsystem;
 
-use crate::types::{Dimensions, Color, SdlColor};
+use crate::types::{Dimensions, Rect, Color, SdlColor};
 use crate::texture_manager::TextureManager;
 use crate::text::TextRenderer;
 
@@ -24,7 +23,7 @@ impl Graphics {
 
         let canvas = window.into_canvas().build().unwrap();
         let texture_creator = canvas.texture_creator();
-        let text_renderer = TextRenderer::new("resources/pixel_font.ttf", 12)
+        let text_renderer = TextRenderer::new("resources/pixel_font.ttf", 10)
             .expect("Failed to initialize text renderer");
         
         Self { 
@@ -36,14 +35,14 @@ impl Graphics {
 
     pub fn draw_rect(&mut self, rect: Rect, color: Color) {
         self.canvas.set_draw_color(color.to_sdl());
-        self.canvas.fill_rect(rect).unwrap();
+        self.canvas.fill_rect(rect.to_sdl()).unwrap();
     }
 
     pub fn draw_texture(&mut self, path: &str, src: Rect, dst: Rect) {
         let texture = self.texture_manager.get(path);
         match texture {
             Ok(texture) => {
-                let _ = self.canvas.copy(&texture, src, dst);
+                let _ = self.canvas.copy(&texture, src.to_sdl(), dst.to_sdl());
             }
             Err(err) => {
                 error!("Couldn't load texture {path}: {err}");
@@ -60,23 +59,22 @@ impl Graphics {
         self.canvas.present();
     }
 
-    pub fn draw_text(&mut self, text: &str, x: i32, y: i32, scale: f32, color: Color) {
+    pub fn draw_text(&mut self, text: &str, x: i32, y: i32, _scale: f32, color: Color) {
         if let Err(e) = self.text_renderer.render_text(&mut self.canvas, text, x, y, color.to_sdl()) {
             error!("Failed to render text: {}", e);
         }
     }
 
+    pub fn draw_text_centered(&mut self, text: &str, x: i32, y: i32, _scale: f32, color: Color) {
+        if let Err(e) = self.text_renderer.render_text_centered(&mut self.canvas, text, x, y, color.to_sdl()) {
+            error!("Failed to render text: {}", e);
+        }
+    }
+
     pub fn draw_rect_outline(&mut self, rect: Rect, color: Color, thickness: i32) {
-        // Draw top line
-        self.draw_rect(Rect::new(rect.x, rect.y, rect.width(), thickness as u32), color);
-        
-        // Draw bottom line
-        self.draw_rect(Rect::new(rect.x, rect.y + rect.height() as i32 - thickness, rect.width(), thickness as u32), color);
-        
-        // Draw left line
-        self.draw_rect(Rect::new(rect.x, rect.y, thickness as u32, rect.height()), color);
-        
-        // Draw right line
-        self.draw_rect(Rect::new(rect.x + rect.width() as i32 - thickness, rect.y, thickness as u32, rect.height()), color);
+        self.draw_rect(Rect::new(rect.x, rect.y, rect.width, thickness as u32), color);
+        self.draw_rect(Rect::new(rect.x, rect.y + rect.height as i32 - thickness, rect.width, thickness as u32), color);
+        self.draw_rect(Rect::new(rect.x, rect.y, thickness as u32, rect.height), color);
+        self.draw_rect(Rect::new(rect.x + rect.width as i32 - thickness, rect.y, thickness as u32, rect.height), color);
     }
 }

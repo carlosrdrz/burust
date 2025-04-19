@@ -6,10 +6,10 @@ use super::config::UI_CONFIG;
 use super::renderer::PaneRenderer;
 
 pub struct Pane {
-    pub x: i32,
-    pub y: i32,
-    pub width: u32,
-    pub height: u32,
+    x: i32,
+    y: i32,
+    width: u32,
+    height: u32,
     color: Color,
     widgets: Vec<WidgetBox>,
 }

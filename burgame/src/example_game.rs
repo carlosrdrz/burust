@@ -44,20 +44,20 @@ impl Game for ExampleGame {
         right_pane.add_widget(Box::new(label));
 
         // Button widget
-        let button = Button::new(10, 50, 200, 40, "Click Me!");
+        let button = Button::new(10, 50, 200, 30, "Click Me!");
         right_pane.add_widget(Box::new(button));
 
         // Input box widget
-        let input_box = InputBox::new(10, 100, 200, 30, "Type here...");
+        let input_box = InputBox::new(10, 100, 200, 20, "Type here...");
         right_pane.add_widget(Box::new(input_box));
 
         // Selector widget
         let options = vec!["Option 1".to_string(), "Option 2".to_string(), "Option 3".to_string()];
-        let selector = Selector::new(10, 140, 200, 30, options);
+        let selector = Selector::new(10, 140, 200, 25, options);
         right_pane.add_widget(Box::new(selector));
 
         // Image widget (assuming we have a test image)
-        let image = Image::new(10, 180, 200, 200, "assets/test.png");
+        let image = Image::new(10, 180, 140, 180, "resources/sprites/chars_avatar/1.png");
         right_pane.add_widget(Box::new(image));
 
         self.ui_manager.add_pane(right_pane);

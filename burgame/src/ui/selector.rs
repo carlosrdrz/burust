@@ -4,15 +4,13 @@ use crate::ui::config::UI_CONFIG;
 use super::{Draw, DrawingContext, Widget};
 
 pub struct Selector {
-    pub x: i32,
-    pub y: i32,
-    pub width: u32,
-    pub height: u32,
+    x: i32,
+    y: i32,
+    width: u32,
+    height: u32,
     options: Vec<String>,
     selected_index: usize,
-    background_color: Color,
     text_color: Color,
-    arrow_color: Color,
 }
 
 impl Widget for Selector {}
@@ -28,18 +26,18 @@ impl Selector {
             height,
             options,
             selected_index: 0,
-            background_color: Color::from_array(config.background_color),
             text_color: Color::from_array(config.text_color),
-            arrow_color: Color::from_array(config.arrow_color),
         }
     }
     
+    #[allow(dead_code)]
     pub fn set_selected_index(&mut self, index: usize) {
         if index < self.options.len() {
             self.selected_index = index;
         }
     }
     
+    #[allow(dead_code)]
     pub fn get_selected_index(&self) -> usize {
         self.selected_index
     }
@@ -48,6 +46,7 @@ impl Selector {
         self.options.get(self.selected_index).map(|s| s.as_str())
     }
     
+    #[allow(dead_code)]
     pub fn select_previous(&mut self) {
         if self.selected_index > 0 {
             self.selected_index -= 1;
@@ -56,14 +55,11 @@ impl Selector {
         }
     }
     
+    #[allow(dead_code)]
     pub fn select_next(&mut self) {
         if !self.options.is_empty() {
             self.selected_index = (self.selected_index + 1) % self.options.len();
         }
-    }
-    
-    pub fn add_option(&mut self, option: &str) {
-        self.options.push(option.to_string());
     }
 }
 
@@ -78,13 +74,12 @@ impl Draw for Selector {
         let scaled_rect = base_rect.scale(scale);
         
         // Draw the background using sprite
-        let selector_sprite = &UI_CONFIG.widgets.selector.sprites.background;
-        let src = Rect::from_array(*selector_sprite);
-        graphics.draw_texture("resources/sprites/gui.png", src.to_sdl(), scaled_rect.to_sdl());
+        let src = Rect::from_array(UI_CONFIG.widgets.selector.sprites.background);
+        graphics.draw_texture("resources/sprites/gui.png", src, scaled_rect);
         
         // Draw selected option text
         if let Some(option) = self.get_selected_option() {
-            graphics.draw_text(
+            graphics.draw_text_centered(
                 option,
                 scaled_rect.x + (scaled_rect.width / 2) as i32,
                 scaled_rect.y + (scaled_rect.height / 2) as i32,
@@ -94,25 +89,26 @@ impl Draw for Selector {
         }
         
         // Draw arrows
-        let arrow_size = (10.0 * scale) as u32;
+        let left_arrow = &UI_CONFIG.widgets.selector.sprites.left_arrow;
+        let arrow_width_scaled = (left_arrow[2] as f32 * scale) as u32;
+        let arrow_height_scaled = (left_arrow[3] as f32 * scale) as u32;
         let arrow_padding = (5.0 * scale) as i32;
         
         // Left arrow
         let left_arrow_x = scaled_rect.x + arrow_padding;
-        let left_arrow_y = scaled_rect.y + (scaled_rect.height / 2) as i32 - (arrow_size / 2) as i32;
+        let left_arrow_y = scaled_rect.y + (scaled_rect.height / 2) as i32 - (arrow_height_scaled / 2) as i32;
         
-        let left_arrow = &UI_CONFIG.widgets.selector.sprites.left_arrow;
         let left_src = Rect::from_array(*left_arrow);
-        let left_dest = Rect::new(left_arrow_x, left_arrow_y, arrow_size, arrow_size);
-        graphics.draw_texture("resources/sprites/gui.png", left_src.to_sdl(), left_dest.to_sdl());
+        let left_dest = Rect::new(left_arrow_x, left_arrow_y, arrow_width_scaled, arrow_height_scaled);
+        graphics.draw_texture("resources/sprites/gui.png", left_src, left_dest);
         
         // Right arrow
-        let right_arrow_x = scaled_rect.x + scaled_rect.width as i32 - arrow_size as i32 - arrow_padding;
-        let right_arrow_y = scaled_rect.y + (scaled_rect.height / 2) as i32 - (arrow_size / 2) as i32;
+        let right_arrow_x = scaled_rect.x + scaled_rect.width as i32 - arrow_width_scaled as i32 - arrow_padding;
+        let right_arrow_y = scaled_rect.y + (scaled_rect.height / 2) as i32 - (arrow_height_scaled / 2) as i32;
         
         let right_arrow = &UI_CONFIG.widgets.selector.sprites.right_arrow;
         let right_src = Rect::from_array(*right_arrow);
-        let right_dest = Rect::new(right_arrow_x, right_arrow_y, arrow_size, arrow_size);
-        graphics.draw_texture("resources/sprites/gui.png", right_src.to_sdl(), right_dest.to_sdl());
+        let right_dest = Rect::new(right_arrow_x, right_arrow_y, arrow_width_scaled, arrow_height_scaled);
+        graphics.draw_texture("resources/sprites/gui.png", right_src, right_dest);
     }
 } 

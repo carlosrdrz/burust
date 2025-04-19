@@ -4,11 +4,11 @@ use crate::ui::config::UI_CONFIG;
 use super::{Draw, DrawingContext, Widget};
 
 pub struct Label {
-    pub x: i32,
-    pub y: i32,
-    pub width: u32,
-    pub height: u32,
-    pub text: String,
+    x: i32,
+    y: i32,
+    width: u32,
+    height: u32,
+    text: String,
     text_color: Color,
 }
 
@@ -26,9 +26,9 @@ impl Label {
         }
     }
 
-    pub fn with_color(mut self, color: Color) -> Self {
+    #[allow(dead_code)]
+    pub fn set_color(mut self, color: Color) {
         self.text_color = color;
-        self
     }
 
     pub fn set_text(&mut self, text: &str) {

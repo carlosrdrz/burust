@@ -1,12 +1,12 @@
-use burengine::{graphics::Graphics, types::{Color, Rect}};
+use burengine::{graphics::Graphics, types::Rect};
 
 use super::{Draw, DrawingContext, Widget};
 
 pub struct Image {
-    pub x: i32,
-    pub y: i32,
-    pub width: u32,
-    pub height: u32,
+    x: i32,
+    y: i32,
+    width: u32,
+    height: u32,
     texture_path: String,
     src_rect: Option<Rect>,
 }
@@ -24,16 +24,13 @@ impl Image {
             src_rect: None,
         }
     }
-
-    pub fn with_src_rect(mut self, src_rect: Rect) -> Self {
-        self.src_rect = Some(src_rect);
-        self
-    }
     
+    #[allow(dead_code)]
     pub fn set_texture(&mut self, texture_path: &str) {
         self.texture_path = texture_path.to_string();
     }
     
+    #[allow(dead_code)]
     pub fn set_src_rect(&mut self, src_rect: Option<Rect>) {
         self.src_rect = src_rect;
     }
@@ -56,6 +53,6 @@ impl Draw for Image {
         };
         
         // Draw the image
-        graphics.draw_texture(&self.texture_path, src_rect.to_sdl(), dest_rect.to_sdl());
+        graphics.draw_texture(&self.texture_path, src_rect, dest_rect);
     }
 } 

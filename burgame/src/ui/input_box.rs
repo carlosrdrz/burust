@@ -4,10 +4,10 @@ use crate::ui::config::UI_CONFIG;
 use super::{Draw, DrawingContext, Widget};
 
 pub struct InputBox {
-    pub x: i32,
-    pub y: i32,
-    pub width: u32,
-    pub height: u32,
+    x: i32,
+    y: i32,
+    width: u32,
+    height: u32,
     text: String,
     placeholder: String,
     text_color: Color,
@@ -44,25 +44,30 @@ impl InputBox {
         }
     }
     
+    #[allow(dead_code)]
     pub fn set_text(&mut self, text: &str) {
         self.text = text.to_string();
         self.cursor_position = self.text.len();
     }
     
+    #[allow(dead_code)]
     pub fn get_text(&self) -> &str {
         &self.text
     }
     
+    #[allow(dead_code)]
     pub fn set_focus(&mut self, focused: bool) {
         self.is_focused = focused;
         self.cursor_blink_timer = 0.0;
         self.show_cursor = focused;
     }
     
+    #[allow(dead_code)]
     pub fn is_focused(&self) -> bool {
         self.is_focused
     }
     
+    #[allow(dead_code)]
     pub fn update(&mut self, delta_time: f32) {
         if self.is_focused {
             self.cursor_blink_timer += delta_time;
@@ -74,6 +79,7 @@ impl InputBox {
     }
     
     // This would be connected to keyboard input events
+    #[allow(dead_code)]
     pub fn handle_character(&mut self, c: char) {
         if self.is_focused {
             let mut chars = self.text.chars().collect::<Vec<_>>();
@@ -83,6 +89,7 @@ impl InputBox {
         }
     }
     
+    #[allow(dead_code)]
     pub fn handle_backspace(&mut self) {
         if self.is_focused && self.cursor_position > 0 {
             let mut chars = self.text.chars().collect::<Vec<_>>();
@@ -104,15 +111,15 @@ impl Draw for InputBox {
         let scaled_rect = base_rect.scale(scale);
         
         // Draw background
-        graphics.draw_rect(scaled_rect.to_sdl(), self.background_color);
+        graphics.draw_rect(scaled_rect, self.background_color);
         
         // Draw border
         let border_thickness = 1;
-        graphics.draw_rect_outline(scaled_rect.to_sdl(), self.border_color, border_thickness);
+        graphics.draw_rect_outline(scaled_rect, self.border_color, border_thickness);
         
         // Draw text or placeholder
         let text_padding = (5.0 * scale) as i32;
-        let text_y = scaled_rect.y + (scaled_rect.height / 2) as i32;
+        let text_y = scaled_rect.y + text_padding;
         
         if self.text.is_empty() && !self.is_focused {
             graphics.draw_text(
@@ -137,7 +144,7 @@ impl Draw for InputBox {
                 let approx_char_width = 8.0 * scale;
                 let cursor_x = scaled_rect.x + text_padding + (self.cursor_position as f32 * approx_char_width) as i32;
                 let cursor_rect = Rect::new(cursor_x, scaled_rect.y, 1, scaled_rect.height);
-                graphics.draw_rect(cursor_rect.to_sdl(), self.text_color);
+                graphics.draw_rect(cursor_rect, self.text_color);
             }
         }
     }

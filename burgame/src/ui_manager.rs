@@ -15,6 +15,7 @@ impl UIManager {
         self.panes.push(pane)
     }
 
+    #[allow(dead_code)]
     pub fn add_widget(&mut self, widget: Box<dyn Widget>) {
         let wrapper = WidgetBox(widget);
         self.widgets.push(wrapper)

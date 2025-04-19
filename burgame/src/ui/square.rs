@@ -27,6 +27,6 @@ impl Draw for Square {
         let y = self.y + context.parent_y;
         
         let rect = Rect::new(x, y, self.width, self.height).scale(context.scale);
-        graphics.draw_rect(rect.to_sdl(), self.color);
+        graphics.draw_rect(rect, self.color);
     }
 }
